@@ -1,0 +1,58 @@
+.container{
+    position: relative;
+    margin: 10px;
+}
+
+.file-box {
+    max-height: 500px;
+    overflow: auto;
+    border: 1px solid #cccccc;
+    border-radius: 0 0 4px 4px;
+    background-color: #f5f5f5;
+}
+
+.file-box::after {
+    clear: both;
+}
+
+.file {
+    float: left;
+    margin: 0px;
+    padding: 10px;
+    border: none;
+}
+
+.result-nav {
+    position: absolute;
+    right: 0px;
+    width: 18px;
+    height: 2px;
+    cursor: pointer;
+    background-color: #e94444;
+}
+
+.search-nav {
+    height: 35px;
+    box-sizing: border-box;
+    padding: 5px;
+    background-color: #3883fa;
+    color: #3883fa;
+    text-align: right;
+}
+
+.search-nav>* {
+    vertical-align: middle;
+    margin: 5px;
+}
+
+.highlight {
+    background-color: #ee3242;
+}
+
+.highlight.current {
+    color: #f5ffab;
+}
+
+.glyphicon {
+    cursor: pointer;
+}
