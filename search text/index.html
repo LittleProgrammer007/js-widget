@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <link href="common.css" rel="stylesheet" type="text/css">
+    <link href="iconfont/iconfont.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
@@ -13,9 +14,12 @@
     </div>
 
     <script src="searchText.js"></script>
+    <script src="example.js"></script>
     
     <script>
         const text = new SearchText('#textSearch');
+        text.setText(exampleText);
+        text.highlightInText('开发')
         const file = new SearchText('#fileSearch');
        
     </script>

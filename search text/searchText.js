@@ -15,7 +15,7 @@ function SearchText(selector) {
         <div class="search-box">
             <div class="search-nav">
                 <span class="search-target"></span> <span class="current-num"></span>/
-                <span class="total"></span> <i class="glyphicon glyphicon-chevron-up toPrevious"></i><i class="glyphicon glyphicon-chevron-down toNext"></i>
+                <span class="total"></span> <i class="iconfont icon-chevron-up toPrevious"></i><i class="iconfont icon-chevron-down toNext"></i>
             </div>
             <div class="file-box">
                 <pre class="file"></pre>
@@ -26,12 +26,12 @@ function SearchText(selector) {
         widget.id = id;
         widget.ele = ele = document.getElementById(id);
 
-        ele.getElementsByClassName('toPrevious')[0].addEventListener('click', goPrevious, false);
-        ele.getElementsByClassName('toNext')[0].addEventListener('click', goNext, false);
-        ele.getElementsByClassName('file-box')[0].addEventListener('click', function (event) {
+        ele.getElementsByClassName('toPrevious')[0].addEventListener('click', () => { this.goPrevious() }, false);
+        ele.getElementsByClassName('toNext')[0].addEventListener('click', () => { this.goNext() }, false);
+        ele.getElementsByClassName('file-box')[0].addEventListener('click', (event) => {
             var target = event.target;
             if (target.className === 'result-nav') {
-                gotoNav(target);
+                this.gotoNav(target);
             }
         }, false);
 
@@ -39,47 +39,6 @@ function SearchText(selector) {
     } else {
         throw new Error('can not find this element');
     }
-
-    function gotoNav(target) {
-        const ele = widget.ele;
-        let current = +ele.getElementsByClassName('current-num')[0].innerText;
-        const targets = ele.getElementsByClassName('file')[0].getElementsByClassName('highlight');
-        if (!isNaN(current)) {
-            targets[current - 1].className = 'highlight';
-        }
-        ele.getElementsByClassName('current-num')[0].innerText = target.navIndex;
-        this.setCurrentHighlight(targets[target.navIndex - 1]);
-    }
-
-    function goPrevious() {
-        changeHighlight(function (current, total) {
-            return current > 1 && total > 0;
-        }, function (current) {
-            return current--;
-        });
-    }
-
-    function goNext() {
-        changeHighlight(function (current, total) {
-            return current > 0 && current < total;
-        }, function (current) {
-            return current++;
-        });
-    }
-
-    function changeHighlight(check, change) {
-        const ele = widget.ele;
-        const targets = ele.getElementsByClassName('file')[0].getElementsByClassName('highlight');
-        const currentEle = ele.getElementsByClassName('current-num')[0];
-        let current = +currentEle.innerText;
-        if (check(current, targets.length)) {
-            targets[current - 1].className = 'highlight';
-            current = change(current);
-            currentEle.innerText = current;
-            this.setCurrentHighlight(targets[current - 1]);
-        }
-    }
-
 }
 
 SearchText.prototype = {
@@ -143,6 +102,42 @@ SearchText.prototype = {
             inline: "center"
         });
         ele.className = 'highlight current';
+    },
+    gotoNav: function (target) {
+        const ele = this.widget.ele;
+        let current = +ele.getElementsByClassName('current-num')[0].innerText;
+        const targets = ele.getElementsByClassName('file')[0].getElementsByClassName('highlight');
+        if (!isNaN(current)) {
+            targets[current - 1].className = 'highlight';
+        }
+        ele.getElementsByClassName('current-num')[0].innerText = target.navIndex;
+        this.setCurrentHighlight(targets[target.navIndex - 1]);
+    },
+    goPrevious: function () {
+        this.changeHighlight(function (current, total) {
+            return current > 1 && total > 0;
+        }, function (current) {
+            return current - 1;
+        });
+    },
+    goNext: function () {
+        this.changeHighlight(function (current, total) {
+            return current > 0 && current < total;
+        }, function (current) {
+            return current + 1;
+        });
+    },
+    changeHighlight: function (check, change) {
+        const ele = this.widget.ele;
+        const targets = ele.getElementsByClassName('file')[0].getElementsByClassName('highlight');
+        const currentEle = ele.getElementsByClassName('current-num')[0];
+        let current = +currentEle.innerText;
+        if (check(current, targets.length)) {
+            targets[current - 1].className = 'highlight';
+            current = change(current);
+            currentEle.innerText = current;
+            this.setCurrentHighlight(targets[current - 1]);
+        }
     }
 
 }
