@@ -82,6 +82,7 @@ SearchText.prototype = {
 
             resultNavEles = boxEle.getElementsByClassName('result-nav');
             // add result nav
+            //通过float或绝对定位可使元素的宽高适应内容
             for (let i = 0; i < targetsLen; i++) {
                 resultNavEles[i].style.top = Math.floor(targets[i].offsetTop / totalHeight * availHeight + 50) + 'px';
                 resultNavEles[i].navIndex = i + 1;
@@ -93,7 +94,7 @@ SearchText.prototype = {
         ele.getElementsByClassName('search-target')[0].innerText = word;
         ele.getElementsByClassName('current-num')[0].innerText = current;
         ele.getElementsByClassName('total')[0].innerText = targetsLen;
-
+        //统计信息的字体颜色初始时与背景色相同，后改为白色实现显示。
         ele.getElementsByClassName('search-nav')[0].style.color = '#fff';
     },
     setCurrentHighlight: function (ele) {
